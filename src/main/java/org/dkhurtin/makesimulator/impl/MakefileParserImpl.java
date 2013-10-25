@@ -65,14 +65,17 @@ public class MakefileParserImpl implements MakefileParser {
     }
 
     private TargetAndParents parseTargetLine(String line) {
-        String[] targetAndParents = line.split(":");
-
-        if (targetAndParents.length != 2) {
-            throw new IllegalStateException("Invalid line: " + line);
-        }
+        String[] targetAndParents = line.trim().split(":", 2);
 
         String target = targetAndParents[0].trim();
-        String[] parents = targetAndParents[1].trim().split("[ ]*");
+        String parentLine = targetAndParents.length > 1 ? targetAndParents[1].trim() : "";
+
+        String[] parents;
+        if (parentLine.isEmpty()) {
+            parents = new String[0];
+        } else {
+            parents = parentLine.split("[ ]+");
+        }
 
         if (!isValidTargetName(target)) {
             throw new IllegalStateException("Invalid target name: " + target);
