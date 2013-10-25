@@ -50,7 +50,7 @@ public class MakefileBuilder {
         queue.add(fromTarget);
 
         while (!queue.isEmpty()) {
-            String target = queue.element();
+            String target = queue.remove();
 
             if (viewed.contains(target)) {
                 throw new IllegalStateException("Target " + fromTarget + " contains loop!");

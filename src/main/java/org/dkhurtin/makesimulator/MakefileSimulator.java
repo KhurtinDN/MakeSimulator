@@ -41,6 +41,7 @@ public class MakefileSimulator {
 
         if (targets.isEmpty()) {
             targets = makefile.findRootTargets();
+            System.out.println("Default is root targets: " + targets);
         }
 
         try {

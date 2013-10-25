@@ -13,14 +13,21 @@ public class MakefileUtil {
 
         Map<String, List<String>> reversedMap = Maps.newHashMap();
 
-        for (Map.Entry<String,MakefileExecution> entry : targetToExecution.entrySet()) {
-            for (String parent : entry.getValue().getParentTargets()) {
+        for (Map.Entry<String, MakefileExecution> entry : targetToExecution.entrySet()) {
+            String target = entry.getKey();
+            MakefileExecution execution = entry.getValue();
+
+            if (!reversedMap.containsKey(target)) {
+                reversedMap.put(target, Lists.<String>newArrayList());
+            }
+
+            for (String parent : execution.getParentTargets()) {
 
                 if (!reversedMap.containsKey(parent)) {
                     reversedMap.put(parent, Lists.<String>newArrayList());
                 }
 
-                reversedMap.get(parent).add(entry.getKey());
+                reversedMap.get(parent).add(target);
             }
         }
 

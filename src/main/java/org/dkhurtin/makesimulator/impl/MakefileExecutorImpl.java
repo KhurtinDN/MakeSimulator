@@ -11,11 +11,13 @@ public class MakefileExecutorImpl implements MakefileExecutor {
 
     @Override
     public void execute(Makefile makefile, String target) throws CommandExecutionException {
+        System.out.println("Execute target: " + target);
         execute(makefile, makefile.getExecution(target));
     }
 
     private void execute(Makefile makefile, MakefileExecution execution) throws CommandExecutionException {
         for (String parent : execution.getParentTargets()) {
+            System.out.println("Execute parent target: " + parent);
             execute(makefile, makefile.getExecution(parent));
         }
 

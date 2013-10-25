@@ -10,6 +10,8 @@ public class LinuxCommandExecutor implements CommandExecutor {
 
     @Override
     public void execute(String command) throws CommandExecutionException {
+        System.out.println("Execution: " + command);
+
         Validate.notEmpty(command, "Command line must be not empty.");
 
         Process process = null;
