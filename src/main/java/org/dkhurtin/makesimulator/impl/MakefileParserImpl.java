@@ -68,19 +68,19 @@ public class MakefileParserImpl implements MakefileParser {
         String[] targetAndParents = line.split(":");
 
         if (targetAndParents.length != 2) {
-            throw new IllegalArgumentException("Invalid line: " + line);
+            throw new IllegalStateException("Invalid line: " + line);
         }
 
         String target = targetAndParents[0].trim();
         String[] parents = targetAndParents[1].trim().split("[ ]*");
 
         if (!isValidTargetName(target)) {
-            throw new IllegalArgumentException("Invalid target name: " + target);
+            throw new IllegalStateException("Invalid target name: " + target);
         }
 
         for (String parentTarget : parents) {
             if (!isValidTargetName(parentTarget)) {
-                throw new IllegalArgumentException("Invalid parent target name: " + parentTarget +
+                throw new IllegalStateException("Invalid parent target name: " + parentTarget +
                         " of target: " + target);
             }
         }
@@ -89,6 +89,10 @@ public class MakefileParserImpl implements MakefileParser {
     }
 
     private String parseCommand(String line) {
+        if (!Character.isAlphabetic(line.charAt(1))) {
+            throw new IllegalStateException("Command format mismatch! Invalid command: " + line);
+        }
+
         return line.trim();
     }
 
