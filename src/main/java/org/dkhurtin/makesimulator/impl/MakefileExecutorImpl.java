@@ -10,11 +10,11 @@ public class MakefileExecutorImpl implements MakefileExecutor {
     private CommandExecutor commandExecutor = new LinuxCommandExecutor();
 
     @Override
-    public void execute(Makefile makefile, String target) {
+    public void execute(Makefile makefile, String target) throws CommandExecutionException {
         execute(makefile, makefile.getExecution(target));
     }
 
-    private void execute(Makefile makefile, MakefileExecution execution) {
+    private void execute(Makefile makefile, MakefileExecution execution) throws CommandExecutionException {
         for (String parent : execution.getParentTargets()) {
             execute(makefile, makefile.getExecution(parent));
         }

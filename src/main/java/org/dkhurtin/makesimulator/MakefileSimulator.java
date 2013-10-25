@@ -1,10 +1,9 @@
 package org.dkhurtin.makesimulator;
 
-import com.google.common.collect.Lists;
-import org.apache.commons.lang3.Validate;
 import org.dkhurtin.makesimulator.api.MakefileExecutor;
 import org.dkhurtin.makesimulator.api.MakefileParser;
 import org.dkhurtin.makesimulator.common.Makefile;
+import org.dkhurtin.makesimulator.impl.CommandExecutionException;
 import org.dkhurtin.makesimulator.impl.MakefileExecutorImpl;
 import org.dkhurtin.makesimulator.impl.MakefileParserImpl;
 
@@ -44,8 +43,12 @@ public class MakefileSimulator {
             targets = makefile.findRootTargets();
         }
 
-        for (String target : targets) {
-            executor.execute(makefile, target);
+        try {
+            for (String target : targets) {
+                executor.execute(makefile, target);
+            }
+        } catch (CommandExecutionException e) {
+            e.printStackTrace();
         }
     }
 }
