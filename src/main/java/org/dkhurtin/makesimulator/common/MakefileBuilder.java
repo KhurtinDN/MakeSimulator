@@ -1,6 +1,7 @@
 package org.dkhurtin.makesimulator.common;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.dkhurtin.makesimulator.utils.MakefileUtil;
 
 import java.util.*;
@@ -38,12 +39,22 @@ public class MakefileBuilder {
 
         List<String> rootTargets = MakefileUtil.findRootTargets(targetToExecution);
 
+        Set<String> allVisited = Sets.newHashSet();
+
         for (String rootTarget : rootTargets) {
-            checkLoopNotExists(rootTarget);
+            checkLoopNotExists(rootTarget, allVisited);
+        }
+
+        Set<String> notVisitedTargets = Sets.newHashSet(targetToExecution.keySet());
+        notVisitedTargets.removeAll(allVisited);
+
+        // detect loop from not root
+        for (String notVisitedTarget : notVisitedTargets) {
+            checkLoopNotExists(notVisitedTarget, allVisited);
         }
     }
 
-    private void checkLoopNotExists(String fromTarget) {
+    private void checkLoopNotExists(String fromTarget, Set<String> allVisited) {
         Queue<String> queue = new LinkedList<String>();
         Set<String> viewed = new HashSet<String>();
 
@@ -62,5 +73,7 @@ public class MakefileBuilder {
                 queue.add(parentTarget);
             }
         }
+
+        allVisited.addAll(viewed);
     }
 }
